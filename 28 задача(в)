@@ -1,0 +1,12 @@
+function fibonacci_memoization(n)
+    fib_memo = Dict(1 => 1, 2 => 1)
+    function fib(n, fib_memo)
+        if haskey(fib_memo, n)
+            return fib_memo[n]
+        else
+            fib_memo[n] = fib(n-1, fib_memo) + fib(n-2, fib_memo)
+            return fib_memo[n]
+        end
+    end
+    return fib(n, fib_memo)
+end
