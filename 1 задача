@@ -1,0 +1,23 @@
+ function mark_kross!(r::Robot)     
+    for side in (Nord,West,Sud,Ost) 
+        num_steps=get_num_steps_putmarkers!(r,side) 
+        movements!(r,invers(side),num_steps) 
+    putmarker!(r) 
+end
+
+invers(side::HorizonSide) = HorizonSide(mod(Int(side) + 2,4))
+
+function get_num_putmarkers!(r::Robot,side::HorizonSide)
+    num=0
+    while isborder(r, side) == false 
+        move!(r,side)
+        putmarker!(r)
+        num += 1 
+    end
+    return num #Возвращаем число шагов
+end
+
+movements!(r::Robot,side::HorizonSide,num_steps::Int) = #Движ
+    for _ in 1:num
+        move!(r,side)
+    end
