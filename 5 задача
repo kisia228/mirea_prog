@@ -1,0 +1,44 @@
+function mark_from_perimetr(r::Robot)
+    steps_up = moves!(r,Nord)
+    steps_left = moves!(r,West) 
+    steps_down = moves!(r,Sud)
+
+    side = Nord
+    snake!(r,side)
+
+   moves!(r,West)
+   moves!(r,Sud)
+
+   movements!(r,Nord, steps_down)
+   movements!(r,Ost,steps_left)
+   movements!(r,Sud,steps_up)
+end
+
+function snake!(r::Robot, side::HorizonSide)
+    fl = false
+    while (isborder(r,side) == false) 
+        if (isborder(r,Ost)==true) 
+            fl = true
+            break
+        else
+            move!(r,side)
+        end
+    end
+    if (fl == false)
+        move!(r,Ost)
+        side = invers(side)
+        snake!(r,side)
+    else
+        side = Ost 
+        for way in (Nord, Ost, Sud, West)
+            while isborder(r, side) == true && ismarker(r) == false
+                putmarker!(r)
+                move!(r,way)
+            end
+            putmarker!(r)
+            move!(r,side)
+            side = HorizonSide(mod(Int(side) - 1,4))
+        end
+        putmarker!(r)
+    end
+end
