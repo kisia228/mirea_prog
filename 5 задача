@@ -1,44 +1,61 @@
-function mark_from_perimetr(r::Robot)
-    steps_up = moves!(r,Nord)
-    steps_left = moves!(r,West) 
-    steps_down = moves!(r,Sud)
+using HorizonSideRobots
+include("../RobotHell.jl")
+include("../Exercise 2/perimetr.jl")
 
-    side = Nord
-    snake!(r,side)
-
-   moves!(r,West)
-   moves!(r,Sud)
-
-   movements!(r,Nord, steps_down)
-   movements!(r,Ost,steps_left)
-   movements!(r,Sud,steps_up)
+function go!( cond :: Function, r :: Robot, side :: HorizonSide, steps :: Int)
+    while steps>0
+        if cond(r, side) return (true, side) end
+        move!(r,side); steps-=1
+    end
+    return (false,side) 
 end
 
-function snake!(r::Robot, side::HorizonSide)
-    fl = false
-    while (isborder(r,side) == false) 
-        if (isborder(r,Ost)==true) 
-            fl = true
-            break
-        else
-            move!(r,side)
-        end
+
+function count_dimension!(r :: Robot, side :: HorizonSide)
+    steps=0
+    while !isborder(r,side)
+        move!(r,side)
+        steps+=1
     end
-    if (fl == false)
-        move!(r,Ost)
-        side = invers(side)
-        snake!(r,side)
-    else
-        side = Ost 
-        for way in (Nord, Ost, Sud, West)
-            while isborder(r, side) == true && ismarker(r) == false
-                putmarker!(r)
-                move!(r,way)
-            end
-            putmarker!(r)
-            move!(r,side)
-            side = HorizonSide(mod(Int(side) - 1,4))
-        end
-        putmarker!(r)
+    return steps
+end
+
+
+function close_borders(r :: Robot, side :: HorizonSide, x :: Int, y :: Int)
+    for i in 1:4
+        res=go!((r,side)->isborder(r,anticlockwise(side)),r,side ,x*mod(i,2)+y*mod(i+1,2))
+        if res[1]==true return res end
+        side=anticlockwise(side)
     end
+    return (false,Nord)
+end
+
+function find_innerper(r :: Robot)
+    collibrate!(r;track=false); side=Ost; flag=()
+    x=count_dimension!(r,Ost); collibrate!(r;track=false)
+    y=count_dimension!(r,Sud); collibrate!(r;track=false)
+    while true
+        flag=close_borders(r,side,x,y)
+        if flag[1]==true break end
+        x-=2; y-=2
+        move!(r,Sud); move!(r,Ost)
+    end
+    return flag[2]
+end
+
+function fill_innerper(r :: Robot, side :: HorizonSide)
+    for i in 1:4
+        along!((r,side)->isborder(r,anticlockwise(side)), Painter(r), side)
+        side=anticlockwise(side)
+        move!(r,side)
+    end
+end
+
+function fill_all_pers!(r :: Robot)
+    wayhome=collibrate!(r)
+    perimetr!(r); collibrate!(r;track=false)
+    side=find_innerper(r)
+    println(side)
+    fill_innerper(r,side)
+    collibrate!(r; track=false); gohome!(r,wayhome)
 end
