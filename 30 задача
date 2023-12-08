@@ -1,13 +1,16 @@
 using HorizonSideRobots
-include("../RobotHell.jl")
 
-mutable struct AndrCrossRobot <: CoordFamily
+mutable struct ChessRobot
     robot :: Robot
     x :: Int
     y :: Int
 end
 
-function HorizonSideRobots.move!(r :: AndrCrossRobot, side :: HorizonSide)
+switch(f :: Function, x...) = f(x...)
+
+inverse(side :: HorizonSide) = HorizonSide(mod(Int(side)+2,4))
+
+function HorizonSideRobots.move!(r :: ChessRobot, side :: HorizonSide)
     switch(side) do side
         side==Nord && (r.y+=1)
         side==West && (r.x+=1)
@@ -17,9 +20,13 @@ function HorizonSideRobots.move!(r :: AndrCrossRobot, side :: HorizonSide)
     move!(r.robot,side)
 end
 
-HorizonSideRobots.putmarker!(r :: AndrCrossRobot) = abs(r.x)==abs(r.y) && putmarker!(r.robot)
+HorizonSideRobots.isborder(r :: ChessRobot, side :: HorizonSide) = isborder(r.robot,side)
 
-function fill(cond :: Function, r :: AndrCrossRobot )
+HorizonSideRobots.ismarker(r :: ChessRobot) = ismarker(r.robot)
+
+HorizonSideRobots.putmarker!(r :: ChessRobot) = mod(abs(r.x)+abs(r.y),2)==0 && putmarker!(r.robot)
+
+function fill(cond :: Function, r :: ChessRobot )
     coords=Set{NTuple{2,Int}}()
     function recursive()
         ((r.x,r.y) in coords) && return
@@ -34,7 +41,7 @@ function fill(cond :: Function, r :: AndrCrossRobot )
     recursive()
 end
 
-function recursive_andrcross!(r :: Robot)
-    cr=AndrCrossRobot(r,0,0)
+function recursive_chess!(r :: Robot)
+    cr=ChessRobot(r,0,0)
     fill((r,side)->isborder(r,side), cr)
 end
