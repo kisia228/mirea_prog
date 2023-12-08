@@ -1,23 +1,11 @@
- function mark_kross!(r::Robot)     
-    for side in (Nord,West,Sud,Ost) 
-        num_steps=get_num_steps_putmarkers!(r,side) 
-        movements!(r,invers(side),num_steps) 
-    putmarker!(r) 
-end
+using HorizonSideRobots
+include("../RobotHell.jl")
 
-invers(side::HorizonSide) = HorizonSide(mod(Int(side) + 2,4))
-
-function get_num_putmarkers!(r::Robot,side::HorizonSide)
-    num=0
-    while isborder(r, side) == false 
-        move!(r,side)
-        putmarker!(r)
-        num += 1 
+function cross!( robot :: Robot )
+    painter=Painter( robot )
+    putmarker!( robot )
+    for side in (HorizonSide(i) for i in 0:3)
+        along!( ( x...) -> !isborder( robot , side ) , robot, side)
+        along!(( x... ) -> !ismarker( painter ), painter ,inverse( side ) )
     end
-    return num #Возвращаем число шагов
 end
-
-movements!(r::Robot,side::HorizonSide,num_steps::Int) = #Движ
-    for _ in 1:num
-        move!(r,side)
-    end
