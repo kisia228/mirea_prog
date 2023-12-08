@@ -1,22 +1,21 @@
-function find_marker(r) 
-    num_steps_max=1
-    side=Nord
-    while ismarker(r)==false
-        for _ in 1:2
-            find_marker(r,side,num_steps_max)
-            side=next(side)
-        end
-        num_steps_max+=1
-    end
-end
+using HorizonSideRobots
+clockwise(side :: HorizonSide) = HorizonSide(mod(Int(side)+1,4))
 
-function find_marker(r,side,num_steps_max)
-    for _ in 1:num_steps_max
-        if ismarker(r)
-            return nothing
-        end
+function till_marker!(r :: Robot,side :: HorizonSide, steps :: Int)
+    while !ismarker(r) && steps>0
         move!(r,side)
+        steps-=1
     end
 end
 
-next(side::HorizonSide)=HorizonSide(mod(Int(side)+1,4))
+function find_marker!(r :: Robot)
+    steps=1
+    side=Nord
+    while !ismarker(r)
+        till_marker!(r,side,steps)
+        side=clockwise(side)
+        till_marker!(r,side,steps)
+        side=clockwise(side)
+        steps+=1
+    end
+end
