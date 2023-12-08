@@ -1,6 +1,5 @@
 using HorizonSideRobots
 include("../RobotHell.jl")
-include("../Exercise 2/perimetr.jl")
 
 mutable struct SpecificCoordRobot <: SampleRobot
     robo :: Robot
