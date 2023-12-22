@@ -1,7 +1,11 @@
-using HorizonSideRobots
-include("../RobotHell.jl")
-
-function undergap!(r :: Robot)
-    base=BaseRobot(r)
-    shuttle!((x...)->isborder(r,Nord),base,Ost)
+function shuttle!(stop_condition::Function, r, side)
+    HorizonSideRobots.move!(robot, side::NTuple{2,HorizonSide})= 
+    for s in side 
+        move!(robot, s)
+        if stop_condition == 0
+            return true
+        end
+    end
+ 
 end
+ 
