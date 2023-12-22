@@ -1,13 +1,14 @@
-using HorizonSideRobots
-include("../RobotHell.jl")
+include("somefunctions.jl")
 
-function fill!( robot :: Robot)
-    wayhome=collibrate!(r); side=Ost
-    painter=Painter( robot )
-    while true
-        along!( (x...) -> !isborder( painter,side ) , painter, side )
-        if isborder( painter , Sud ) break end
-        move!( painter , Sud ); side = inverse( side )
+function number_3!(robot)
+    side = Ost
+    start_pos_define(robot)
+    while !isborder(robot, Nord)
+        along_markers!(robot, side)
+        move!(robot, Nord)
+        along_markers!(robot, inverse(side))
     end
-    collibrate!(painter ; track=false); gohome!(painter,wayhome)
+    along_markers!(robot, inverse(side))
+    south_west(robot)
+    goto_start_pos(robot)
 end
