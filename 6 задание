@@ -1,5 +1,5 @@
 using HorizonSideRobots
-include("../RobotHell.jl")
+r = Robot(animate = true)
 
 mutable struct SpecificCoordRobot <: SampleRobot
     robo :: Robot
