@@ -1,3 +1,6 @@
+using HorizonSideRobots
+r = Robot(animate = true)
+
 function task8!(r, Side1, Side2, Side3, Side4)
     i = 1
     while !ismarker(r) == 1
