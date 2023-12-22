@@ -1,10 +1,45 @@
-include("somefunctions.jl")
+using HorizonSideRobots
+r = Robot(animate = true)
 
-function number_2!(robot)
-    start_pos_define(r)
-    putmarker!(robot)
-    for side in (Nord, Ost, Sud, West)
-        along_markers!(r, side)
+function tocorner!(r, Side1, Side2)
+    while !isborder(r, Side1)
+        move!(r, Side1)
     end
-    goto_start_pos(r)
+    while !isborder(r, Side2)
+        move!(r, Side2)
+    end
 end
+ 
+function goandmark!(r, Side)
+    while !isborder(r, Side)
+        putmarker!(r)
+        move!(r, Side)
+    end
+end
+ 
+ 
+function task2!(r, Side1, Side2, Side3, Side4)
+    a = 0
+    b = 0
+    while !isborder(r, Side1)
+        move!(r, Side1)
+        a += 1
+    end
+    while !isborder(r, Side2)
+        move!(r, Side2)
+        b += 1
+    end
+    goandmark!(r, Side3)
+    goandmark!(r, Side4)
+    goandmark!(r, Side1)
+    goandmark!(r, Side2)
+    while a != 0
+        move!(r, Side3)
+        a -= 1
+    end
+    while b != 0
+        move!(r, Side4)
+        b -= 1
+    end
+end
+ 
