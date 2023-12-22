@@ -1,6 +1,5 @@
 using HorizonSideRobots
-
-inverse( side :: HorizonSide ) = HorizonSide( mod( Int( side ) +2 ,4 ) )
+r = Robot(animate = true)
 
 function twice!(r :: Robot, side :: HorizonSide)
     if !isborder(r,side)
