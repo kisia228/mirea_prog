@@ -1,11 +1,16 @@
-using HorizonSideRobots
-include("../RobotHell.jl")
+include("somefunctions.jl")
 
-function cross!( robot :: Robot )
-    painter=Painter( robot )
-    putmarker!( robot )
-    for side in (HorizonSide(i) for i in 0:3)
-        along!( ( x...) -> !isborder( robot , side ) , robot, side)
-        along!(( x... ) -> !ismarker( painter ), painter ,inverse( side ) )
+function number_1!(robot)
+    putmarker!(robot)
+    for side in (Nord, Sud, Ost, West)
+        step = 0
+        while !isborder(robot, side)
+            move!(robot, side)
+            putmarker!(robot)
+            step += 1
+        end
+        for i = 1:step
+            move!(robot, inverse(side))
+        end
     end
 end
