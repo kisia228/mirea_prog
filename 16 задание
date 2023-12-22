@@ -1,3 +1,6 @@
+using HorizonSideRobots
+r = Robot(animate = true)
+
 function shuttle!(stop_condition::Function, r, side)
     HorizonSideRobots.move!(robot, side::NTuple{2,HorizonSide})= 
     for s in side 
