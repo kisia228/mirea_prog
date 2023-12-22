@@ -1,7 +1,9 @@
 using HorizonSideRobots
+r = Robot(animate = true)
 
-function recursive_along!(r :: Robot, side :: HorizonSide) 
-    isborder(r,side) && return
-    move!(r,side)
-    recursive_along!(r, side)
+function along_rec!(robot, side)
+    if !isborder(robot, side)
+        move!(robot, side)
+        along_rec!(robot, side)
+    end
 end
