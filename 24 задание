@@ -1,7 +1,7 @@
 using HorizonSideRobots
 r = Robot(animate = true)
 
-function half!(r :: Robot, side :: HorizonSide)
+function half!(r, side)
     if !isborder(r,side)
         move!(r,side)
     else
