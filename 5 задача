@@ -1,4 +1,5 @@
-include("somefunctions.jl")
+using HorizonSideRobots
+r = Robot(animate = true)
 
 function n5!(robot)
       start_pos_define(robot)
