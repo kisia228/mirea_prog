@@ -1,10 +1,10 @@
-using HorizonSideRobots
-include("../RobotHell.jl")
+include("somefunctions.jl")
 
-function perimetr!(r :: Union{SampleRobot,Robot})
-    wayhome = collibrate!(r)
-    for side in (Ost,Sud,West,Nord)
-        along!((x...)->!isborder(r,side), Painter(r), side)
+function number_2!(robot)
+    start_pos_define(r)
+    putmarker!(robot)
+    for side in (Nord, Ost, Sud, West)
+        along_markers!(r, side)
     end
-    gohome!(r,wayhome)
+    goto_start_pos(r)
 end
