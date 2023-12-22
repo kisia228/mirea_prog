@@ -1,4 +1,6 @@
 using HorizonSideRobots
+r = Robot(animate = true)
+
 function step!( r :: Robot, side :: HorizonSide)
     isborder(r,side) && return
     move!(r,side)
