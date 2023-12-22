@@ -1,3 +1,6 @@
+using HorizonSideRobots
+r = Robot(animate = true)
+
 function dmove!(r, side1, side2)
     move!(r, side1)
     move!(r, side2)
