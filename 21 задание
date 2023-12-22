@@ -1,4 +1,5 @@
 using HorizonSideRobots
+r = Robot(animate = true)
 
 clockwise( side :: HorizonSide) = HorizonSide(mod(Int(side)+1,4))
 
