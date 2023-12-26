@@ -1,27 +1,35 @@
 using HorizonSideRobots
 r = Robot(animate = true)
 
-function alongandback!(r, Side, Backside)::Nothing
-    numsteps = 0
-    while !isborder(r, Side)
-        if !ismarker(r)
-            putmarker!(r)
-        end
-        move!(r, Side)
-        numsteps += 1 
+function result!(robot):Nothing
+    a = 0
+    putmarker!(robot)
+    while !isborder(robot, Nord)
+        move!(robot, Nord)
+        putmarker!(robot)
+        a -= 1
     end
-    while numsteps != 0
-        if !ismarker(r)
-            putmarker!(r)
-        end
-        numsteps -= 1
-        move!(r, Backside)
+    while !isborder(robot, Sud)
+        move!(robot, Sud)
+        putmarker!(robot)
+        a += 1
+    end
+    while a > 0
+        move!(robot, Nord)
+        a -= 1
+    end
+    while !isborder(robot, West)
+        move!(robot, West)
+        putmarker!(robot)
+        a -= 1
+    end
+    while !isborder(robot, Ost)
+        move!(robot, Ost)
+        putmarker!(robot)
+        a += 1
+    end
+    while a > 0
+        move!(robot, West)
+        a -= 1
     end
 end
- 
-#alongandback!(r, Ost, West)
-function task1!(r)#::Nothing идет по часовой
-    alongandback!(r, Nord, Sud)
-    alongandback!(r, Sud, Nord)
-    alongandback!(r, Ost, West)
-    alongandback!(r, West, Ost)
