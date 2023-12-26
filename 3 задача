@@ -1,7 +1,27 @@
 using HorizonSideRobots
 r = Robot(animate = true)
 
-function task3!(r, Side1, Side2, Side3, Side4)
+function tocorner!(r, Side1, Side2)
+    while !isborder(r, Side1)
+        move!(r, Side1)
+    end
+    while !isborder(r, Side2)
+        move!(r, Side2)
+    end
+end
+
+function goandmark!(r, Side)
+    while !isborder(r, Side)
+        putmarker!(r)
+        move!(r, Side)
+    end
+end
+
+function task3!(r)
+	Side1 = Nord
+	Side2 = Ost
+	Side3 = Sud 
+	Side4 = West
     d = 1
     a = 0
     b = 0
@@ -35,7 +55,7 @@ function task3!(r, Side1, Side2, Side3, Side4)
         goandmark!(r, Side1)
         putmarker!(r)
     end
- 
+
     tocorner!(r, Side1, Side2)
  
     while a != 0
