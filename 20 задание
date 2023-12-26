@@ -1,14 +1,23 @@
 using HorizonSideRobots
 r = Robot(animate = true)
 
-inverse( side :: HorizonSide) = HorizonSide(mod(Int(side)+2,4))
-
-function goandback!(r :: Robot, side :: HorizonSide) 
-    if isborder(r,side) 
-        putmarker!(r) 
+function backside(side)
+    if side == Nord 
+        return Sud
+    elseif side == Sud 
+        return Nord
+    elseif side == West
+        return Ost
     else
-        move!(r,side)
-        goandback!(r, side)
-        move!(r,inverse(side))
+        return West 
+    end
+end
+
+function along_rec!(robot, side)
+    if isborder(robot, side) putmarker!(robot)
+    else
+        move!(robot, side)
+        along_rec!(robot, side)
+        move!(robot, backside(side))
     end
 end
