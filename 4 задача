@@ -10,7 +10,7 @@ function diagonalalongandback!(r, Side1, Side2, Side3, Side4)
         dmove!(r, Side1, Side2)
         putmarker!(r)
     end
-    while ismarker(r) == 1
+    while ismarker(r) == True
         dmove!(r, Side3, Side4)
     end
 end
